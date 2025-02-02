@@ -1,0 +1,30 @@
+.header {
+  margin: 0 auto;
+  top: 0;
+  left: 0;
+  position: fixed;
+  width: 100%;
+  padding: 10px 20px;
+  z-index: 100;
+  background-color: rgb(3, 3, 255);
+}
+
+.form {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.input {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid rgb(0, 0, 0);
+  width: 300px;
+}
+
+.button {
+  font-size: 16px;
+  border: 1px solid rgb(0, 0, 0);
+  background-color: rgb(229, 226, 226);
+  cursor: pointer;
+}
