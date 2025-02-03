@@ -1,0 +1,15 @@
+.container {
+  padding: 10px;
+  background-color: #ffcccc;
+  border: 1px solid red;
+  color: red;
+  text-align: center;
+  border-radius: 5px;
+  margin: 10px auto;
+  width: 80%;
+}
+
+.text {
+  font-size: 16px;
+  font-weight: bold;
+}

@@ -7,36 +7,81 @@ import fetchImages from "./services/api";
 import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
 import Loader from "./components/Loader/Loader";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
-// import ImageModal from "./components/ImageModal/ImageModal";
+import ImageModal from "./components/ImageModal/ImageModal";
 
 function App() {
   const [query, setQuery] = useState("");
   const [images, setImages] = useState([]);
-  // const [page, setPage] = useState(0);
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [isError, setIsError] = useState(false);
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [totalPages, setTotalPages] = useState(0);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     if (!query) return;
     const getData = async () => {
-      const response = await fetchImages();
-      setImages(response.results);
+      try {
+        setIsLoading(true);
+        setErrorMessage(false);
+        const data = await fetchImages(query, page);
+        setImages((prev) => [...prev, ...data.results]);
+        setTotalPages(data.total_pages);
+        console.log("Total Pages:", data.total_pages);
+        setErrorMessage("");
+      } catch (error) {
+        console.error("Error fetching images:", error);
+        setErrorMessage("Something went wrong! Try again later...");
+      } finally {
+        setIsLoading(false);
+      }
     };
     getData();
-  }, [query]);
+  }, [query, page]);
 
   const handleSubmit = (newQuery) => {
+    if (newQuery === query) return;
     setQuery(newQuery);
+    setImages([]);
+    setPage(1);
+    setTotalPages(0);
+    setErrorMessage("");
+  };
+
+  const loadMore = () => {
+    if (!isLoading) {
+      setPage((prev) => prev + 1);
+    }
+  };
+
+  const handleImageClick = (image) => {
+    setSelectedImage(image);
+    setIsOpen(true);
+  };
+  const closeModal = () => {
+    setIsOpen(false);
+    setSelectedImage(null);
   };
 
   return (
     <>
       <SearchBar onSubmit={handleSubmit} />
-      <Loader />
-      <ImageGallery images={images} onSubmit={setImages} />
-      <ErrorMessage message={"Something went wrong! Try again later..."} />
-      <LoadMoreBtn />
-      {/* <ImageModal /> */}
+      {isLoading && <Loader />}
+      {errorMessage && <ErrorMessage message={errorMessage} />}
+      <ImageGallery
+        images={images}
+        onSubmit={setImages}
+        onImageClick={handleImageClick}
+      />
+      {images.length > 0 && page < totalPages && (
+        <LoadMoreBtn onClick={loadMore} />
+      )}
+      <ImageModal
+        image={selectedImage}
+        isOpen={modalIsOpen}
+        closeModal={closeModal}
+      />
     </>
   );
 }
