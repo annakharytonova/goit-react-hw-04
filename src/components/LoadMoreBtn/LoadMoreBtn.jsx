@@ -3,5 +3,3 @@ const LoadMoreBtn = ({ onClick }) => {
 };
 
 export default LoadMoreBtn;
-
-<button>Load more</button>;

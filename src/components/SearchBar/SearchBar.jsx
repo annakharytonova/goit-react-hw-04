@@ -2,7 +2,7 @@ import s from "./SearchBar.module.css";
 import { toast } from "react-hot-toast";
 import { useState } from "react";
 
-const SearchBar = ({ onSubmit, reset }) => {
+const SearchBar = ({ onSubmit }) => {
   const [inputValue, setInputValue] = useState("");
 
   const handleSubmit = (event) => {
@@ -27,7 +27,7 @@ const SearchBar = ({ onSubmit, reset }) => {
           value={inputValue}
           onChange={(event) => setInputValue(event.target.value)}
         />
-        <button className={s.button} onClick={reset} type="submit">
+        <button className={s.button} type="submit">
           Search
         </button>
       </form>
