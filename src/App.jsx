@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Toaster from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import "./App.css";
 import SearchBar from "./components/SearchBar/SearchBar";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
@@ -69,13 +69,13 @@ function App() {
       <SearchBar onSubmit={handleSubmit} />
       {isLoading && <Loader />}
       {errorMessage && <ErrorMessage message={errorMessage} />}
-      {images.length > 0 && (
+      {images.length > 0 ? (
         <ImageGallery
           images={images}
           onSubmit={setImages}
           onImageClick={handleImageClick}
         />
-      )}
+      ) : null}
       {images.length > 0 && page < totalPages && (
         <LoadMoreBtn onClick={loadMore} />
       )}
@@ -84,7 +84,16 @@ function App() {
         isOpen={modalIsOpen}
         closeModal={closeModal}
       />
-      <Toaster position="top-center" reverseOrder={false} />
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+        toastOptions={{
+          duration: 4000,
+          style: {
+            fontSize: "16px",
+          },
+        }}
+      />
     </>
   );
 }
